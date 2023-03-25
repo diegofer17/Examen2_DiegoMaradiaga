@@ -11,17 +11,18 @@ import java.util.ArrayList;
  * @author df346
  */
 public class Torneo {
-    private String nombre;
+    private String nombre, periodo;
     private ArrayList <Equipo> listaEquipos = new ArrayList();
     private ArrayList <Partido> listaPartidos = new ArrayList();
 
     public Torneo() {
     }
-    
-    public Torneo(String nombre) {
-        this.nombre = nombre;
-    }
 
+    public Torneo(String nombre, String periodo) {
+        this.nombre = nombre;
+        this.periodo = periodo;
+    }
+    
     public String getNombre() {
         return nombre;
     }
@@ -46,6 +47,14 @@ public class Torneo {
         this.listaPartidos = listaPartidos;
     }
 
+    public String getPeriodo() {
+        return periodo;
+    }
+
+    public void setPeriodo(String periodo) {
+        this.periodo = periodo;
+    }
+    
     @Override
     public String toString() {
         return nombre;

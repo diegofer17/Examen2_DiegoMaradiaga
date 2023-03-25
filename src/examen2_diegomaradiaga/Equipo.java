@@ -19,6 +19,10 @@ public class Equipo {
         this.nombre = nombre;
         this.puntos = puntos;
     }
+    
+    public Equipo(String nombre) {
+        this.nombre = nombre;
+    }
 
     public String getNombre() {
         return nombre;
