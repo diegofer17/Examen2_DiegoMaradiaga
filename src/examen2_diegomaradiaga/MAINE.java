@@ -4,7 +4,15 @@
  */
 package examen2_diegomaradiaga;
 
+import java.io.EOFException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import javax.swing.DefaultListModel;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -51,6 +59,12 @@ public class MAINE extends javax.swing.JFrame {
         jSp_team2 = new javax.swing.JSpinner();
         jbtn_partido = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
+        jD_Listar = new javax.swing.JDialog();
+        jPanel3 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jListTeams = new javax.swing.JList<>();
+        jbtn_salir = new javax.swing.JButton();
+        jLabelEtiqueta = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTreeTorneo = new javax.swing.JTree();
@@ -76,6 +90,11 @@ public class MAINE extends javax.swing.JFrame {
         jpm_menu2.add(AddEquipo);
 
         ListParticip.setText("Listar equipos participantes");
+        ListParticip.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ListParticipActionPerformed(evt);
+            }
+        });
         jpm_menu2.add(ListParticip);
 
         MostrarTab.setText("Mostrar tabla de posiciones");
@@ -91,7 +110,16 @@ public class MAINE extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
+        jSp_team1.setModel(new javax.swing.SpinnerNumberModel(1, null, 8, 1));
+
+        jSp_team2.setModel(new javax.swing.SpinnerNumberModel(1, null, 10, 1));
+
         jbtn_partido.setText("Registrar");
+        jbtn_partido.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jbtn_partidoMouseClicked(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel2.setText("Simulación de partido");
@@ -147,6 +175,57 @@ public class MAINE extends javax.swing.JFrame {
         jD_simulacionLayout.setVerticalGroup(
             jD_simulacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+
+        jListTeams.setBackground(new java.awt.Color(255, 255, 0));
+        jListTeams.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jListTeams.setForeground(new java.awt.Color(255, 255, 255));
+        jScrollPane3.setViewportView(jListTeams);
+
+        jbtn_salir.setText("Salir");
+
+        jLabelEtiqueta.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabelEtiqueta.setForeground(new java.awt.Color(0, 0, 0));
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(488, 488, 488)
+                        .addComponent(jbtn_salir, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(42, 42, 42)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 586, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabelEtiqueta, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(53, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addComponent(jLabelEtiqueta, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28)
+                .addComponent(jbtn_salir, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(22, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jD_ListarLayout = new javax.swing.GroupLayout(jD_Listar.getContentPane());
+        jD_Listar.getContentPane().setLayout(jD_ListarLayout);
+        jD_ListarLayout.setHorizontalGroup(
+            jD_ListarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jD_ListarLayout.setVerticalGroup(
+            jD_ListarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -301,7 +380,8 @@ public class MAINE extends javax.swing.JFrame {
         String name = JOptionPane.showInputDialog(jTreeTorneo, "Ingrese el equipo: ");
         Equipo e = new Equipo(name);
         listasE.add(e);
-        
+        jCB_team1.addItem(e.getNombre());
+        jCB_team2.addItem(e.getNombre());
         DefaultTreeModel m = (DefaultTreeModel) jTreeTorneo.getModel();
         DefaultMutableTreeNode raiz  = (DefaultMutableTreeNode) m.getRoot();
         DefaultMutableTreeNode nodonuevo  = new DefaultMutableTreeNode (e);
@@ -312,11 +392,38 @@ public class MAINE extends javax.swing.JFrame {
     }//GEN-LAST:event_AddEquipoActionPerformed
 
     private void jbtn_partidoSimMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtn_partidoSimMouseClicked
+        if(!listasE.isEmpty()){
         jD_simulacion.setModal(true);
         jD_simulacion.pack();
         jD_simulacion.setLocationRelativeTo(this);
         jD_simulacion.setVisible(true);
+        }
     }//GEN-LAST:event_jbtn_partidoSimMouseClicked
+
+    private void jbtn_partidoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtn_partidoMouseClicked
+        int goles1 = (int)jSp_team1.getValue();
+        int goles2 = (int)jSp_team2.getValue();
+        if (goles1>goles2){
+            int index = jCB_team1.getSelectedIndex();
+            listasE.get(index).setPuntos(+3);
+        }else{
+            int index = jCB_team2.getSelectedIndex();
+            listasE.get(index).setPuntos(+3);
+        }
+        jD_simulacion.dispose();
+    }//GEN-LAST:event_jbtn_partidoMouseClicked
+
+    private void ListParticipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ListParticipActionPerformed
+        DefaultListModel m = (DefaultListModel) jListTeams.getModel();
+        m.removeAllElements();
+        
+        for (Equipo e : listasE) {
+            m.addElement(e);
+        }
+        jD_Listar.pack();
+        jD_Listar.setLocationRelativeTo(null);
+        jD_Listar.setVisible(true);
+    }//GEN-LAST:event_ListParticipActionPerformed
 
     /**
      * @param args the command line arguments
@@ -352,7 +459,68 @@ public class MAINE extends javax.swing.JFrame {
             }
         });
     }
+    
+    /*private void bt_loadMouseClicked(java.awt.event.MouseEvent evt) {                                     
+        JFileChooser jfc = new JFileChooser();
+        int op = jfc.showSaveDialog(bt_save);
+        if (op == JFileChooser.APPROVE_OPTION) {
+            try {
+                File f = jfc.getSelectedFile();
+                if (f.exists()) {
+                    String[] path = f.getPath().split("\\.");
+                    if (path[path.length - 1].equals("dar")) {
+                        FileInputStream in = new FileInputStream(f);
+                        ObjectInputStream input = new ObjectInputStream(in);
+                        try {
+                            Deporte deporte = (Deporte) input.readObject();
+                            deportes.add(deporte);
+                            fillTree();
+                        } catch (EOFException ex) {
 
+                        }
+                        in.close();
+                        input.close();
+
+                    } else {
+                        JOptionPane.showMessageDialog(this, "File Not Supported");
+                    }
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        actualizarComboBox();
+    }                                    
+
+    private void bt_saveMouseClicked(java.awt.event.MouseEvent evt) {                                     
+        JFileChooser jfc = new JFileChooser();
+        int op = jfc.showSaveDialog(bt_save);
+        if (op == JFileChooser.APPROVE_OPTION) {
+            try {
+                File f = jfc.getSelectedFile();
+                if (!f.exists()) {
+                    f = new File(f.getPath() + ".dar");
+                } 
+                    String[] path = f.getPath().split("\\.");
+                    if (path[path.length - 1].equals("dar")) {
+                        ProgressBar pb = new ProgressBar(progressBar, ((Deporte) cb_principal.getSelectedItem()));
+                        pb.start();
+                        FileOutputStream out = new FileOutputStream(f, false);
+                        ObjectOutputStream output = new ObjectOutputStream(out);
+                        output.writeObject(((Deporte) cb_principal.getSelectedItem()));
+                        out.close();
+                        output.close();
+                    }else{
+                        JOptionPane.showMessageDialog(jfc, "Archivo no valido");
+                    }
+                
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    } */
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem AddDeporte;
     private javax.swing.JMenuItem AddEquipo;
@@ -361,19 +529,25 @@ public class MAINE extends javax.swing.JFrame {
     private javax.swing.JMenuItem MostrarTab;
     private javax.swing.JComboBox<String> jCB_team1;
     private javax.swing.JComboBox<String> jCB_team2;
+    private javax.swing.JDialog jD_Listar;
     private javax.swing.JDialog jD_simulacion;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabelEtiqueta;
     private javax.swing.JList<String> jList1;
+    private javax.swing.JList<String> jListTeams;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSpinner jSp_team1;
     private javax.swing.JSpinner jSp_team2;
     private javax.swing.JTree jTreeTorneo;
     private javax.swing.JButton jbtn_partido;
     private javax.swing.JButton jbtn_partidoSim;
+    private javax.swing.JButton jbtn_salir;
     private javax.swing.JPopupMenu jpm_menu1;
     private javax.swing.JPopupMenu jpm_menu2;
     private javax.swing.JPopupMenu jpm_menu3;
