@@ -4,11 +4,13 @@
  */
 package examen2_diegomaradiaga;
 
+import java.io.Serializable;
+
 /**
  *
  * @author df346
  */
-public class Equipo {
+public class Equipo implements Serializable{
     private String nombre;
     private int puntos;
 

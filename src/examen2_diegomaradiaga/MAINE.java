@@ -11,6 +11,7 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -31,7 +32,7 @@ public class MAINE extends javax.swing.JFrame {
     public MAINE() {
         initComponents();
         this.setLocationRelativeTo(null);
-        
+        actualizarCB();
     }
 
     /**
@@ -69,9 +70,10 @@ public class MAINE extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTreeTorneo = new javax.swing.JTree();
         jLabel1 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
         jbtn_partidoSim = new javax.swing.JButton();
+        jbtn_cargar = new javax.swing.JButton();
+        jbtn_guardar = new javax.swing.JButton();
+        jCB1 = new javax.swing.JComboBox<>();
 
         AddDeporte.setText("Agregar deporte");
         AddDeporte.addActionListener(new java.awt.event.ActionListener() {
@@ -181,10 +183,16 @@ public class MAINE extends javax.swing.JFrame {
 
         jListTeams.setBackground(new java.awt.Color(255, 255, 0));
         jListTeams.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jListTeams.setForeground(new java.awt.Color(255, 255, 255));
+        jListTeams.setForeground(new java.awt.Color(0, 0, 0));
+        jListTeams.setModel(new DefaultListModel());
         jScrollPane3.setViewportView(jListTeams);
 
         jbtn_salir.setText("Salir");
+        jbtn_salir.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jbtn_salirMouseClicked(evt);
+            }
+        });
 
         jLabelEtiqueta.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabelEtiqueta.setForeground(new java.awt.Color(0, 0, 0));
@@ -258,17 +266,33 @@ public class MAINE extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("Deportes UNITEC");
 
-        jList1.setBackground(new java.awt.Color(255, 255, 0));
-        jList1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jList1.setForeground(new java.awt.Color(255, 255, 255));
-        jScrollPane2.setViewportView(jList1);
-
         jbtn_partidoSim.setText("Partida");
         jbtn_partidoSim.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jbtn_partidoSimMouseClicked(evt);
             }
         });
+
+        jbtn_cargar.setText("Cargar");
+        jbtn_cargar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jbtn_cargarMouseClicked(evt);
+            }
+        });
+        jbtn_cargar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtn_cargarActionPerformed(evt);
+            }
+        });
+
+        jbtn_guardar.setText("Guardar");
+        jbtn_guardar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jbtn_guardarMouseClicked(evt);
+            }
+        });
+
+        jCB1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -281,9 +305,14 @@ public class MAINE extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(105, 105, 105)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 540, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jbtn_partidoSim, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jbtn_cargar, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
+                                .addComponent(jbtn_guardar, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(70, 70, 70)
+                                .addComponent(jbtn_partidoSim, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jCB1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(98, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -294,10 +323,14 @@ public class MAINE extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(54, 54, 54)
+                        .addComponent(jCB1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jbtn_partidoSim, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jbtn_partidoSim, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jbtn_cargar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jbtn_guardar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(52, 52, 52))
         );
 
@@ -366,7 +399,7 @@ public class MAINE extends javax.swing.JFrame {
         
         Torneo t = new Torneo(name,"Q#");
         listasT.add(t);
-        
+        ((Deporte) nodo_seleccionado.getUserObject()).getListaTroneos().add(t);
         DefaultTreeModel m = (DefaultTreeModel) jTreeTorneo.getModel();
         DefaultMutableTreeNode raiz  = (DefaultMutableTreeNode) m.getRoot();
         DefaultMutableTreeNode nodonuevo  = new DefaultMutableTreeNode (t);
@@ -417,13 +450,80 @@ public class MAINE extends javax.swing.JFrame {
         DefaultListModel m = (DefaultListModel) jListTeams.getModel();
         m.removeAllElements();
         
-        for (Equipo e : listasE) {
+        for (Equipo e : ((Torneo) nodo_seleccionado.getUserObject()).getListaEquipos()) {
             m.addElement(e);
         }
+        
         jD_Listar.pack();
         jD_Listar.setLocationRelativeTo(null);
         jD_Listar.setVisible(true);
     }//GEN-LAST:event_ListParticipActionPerformed
+
+    private void jbtn_salirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtn_salirMouseClicked
+        jD_Listar.dispose();
+    }//GEN-LAST:event_jbtn_salirMouseClicked
+
+    private void jbtn_cargarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtn_cargarMouseClicked
+        JFileChooser jfc = new JFileChooser();
+        int op = jfc.showSaveDialog(jbtn_cargar);
+        if (op == JFileChooser.APPROVE_OPTION) {
+            try {
+                File f = jfc.getSelectedFile();
+                if (f.exists()) {
+                    String[] path = f.getPath().split("\\.");
+                    if (path[path.length - 1].equals("dmp")) {
+                        FileInputStream in = new FileInputStream(f);
+                        ObjectInputStream input = new ObjectInputStream(in);
+                        try {
+                            Deporte dep = (Deporte) input.readObject();
+                            listasD.add(dep);
+                        } catch (EOFException ex) {
+
+                        }
+                        in.close();
+                        input.close();
+
+                    } else {
+                        JOptionPane.showMessageDialog(this, "File Not Supported");
+                    }
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        actualizarCB();
+    }//GEN-LAST:event_jbtn_cargarMouseClicked
+
+    private void jbtn_guardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbtn_guardarMouseClicked
+        JFileChooser jfc = new JFileChooser();
+        int op = jfc.showSaveDialog(jbtn_guardar);
+        if (op == JFileChooser.APPROVE_OPTION) {
+            try {
+                File f = jfc.getSelectedFile();
+                if (!f.exists()) {
+                    f = new File(f.getPath() + ".dmp");
+                } 
+                    String[] path = f.getPath().split("\\.");
+                    if (path[path.length - 1].equals("dmp")) {
+                        FileOutputStream out = new FileOutputStream(f, false);
+                        ObjectOutputStream output = new ObjectOutputStream(out);
+                        output.writeObject(((Deporte) jCB1.getSelectedItem()));
+                        out.close();
+                        output.close();
+                    }else{
+                        JOptionPane.showMessageDialog(jfc, "Archivo no valido");
+                    }
+                
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_jbtn_guardarMouseClicked
+
+    private void jbtn_cargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtn_cargarActionPerformed
+        
+    }//GEN-LAST:event_jbtn_cargarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -460,66 +560,13 @@ public class MAINE extends javax.swing.JFrame {
         });
     }
     
-    /*private void bt_loadMouseClicked(java.awt.event.MouseEvent evt) {                                     
-        JFileChooser jfc = new JFileChooser();
-        int op = jfc.showSaveDialog(bt_save);
-        if (op == JFileChooser.APPROVE_OPTION) {
-            try {
-                File f = jfc.getSelectedFile();
-                if (f.exists()) {
-                    String[] path = f.getPath().split("\\.");
-                    if (path[path.length - 1].equals("dar")) {
-                        FileInputStream in = new FileInputStream(f);
-                        ObjectInputStream input = new ObjectInputStream(in);
-                        try {
-                            Deporte deporte = (Deporte) input.readObject();
-                            deportes.add(deporte);
-                            fillTree();
-                        } catch (EOFException ex) {
-
-                        }
-                        in.close();
-                        input.close();
-
-                    } else {
-                        JOptionPane.showMessageDialog(this, "File Not Supported");
-                    }
-
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+    public void actualizarCB() {
+        DefaultComboBoxModel m = (DefaultComboBoxModel) jCB1.getModel();
+        m.removeAllElements();
+        for (Deporte d : listasD) {
+            m.addElement(d);
         }
-        actualizarComboBox();
-    }                                    
-
-    private void bt_saveMouseClicked(java.awt.event.MouseEvent evt) {                                     
-        JFileChooser jfc = new JFileChooser();
-        int op = jfc.showSaveDialog(bt_save);
-        if (op == JFileChooser.APPROVE_OPTION) {
-            try {
-                File f = jfc.getSelectedFile();
-                if (!f.exists()) {
-                    f = new File(f.getPath() + ".dar");
-                } 
-                    String[] path = f.getPath().split("\\.");
-                    if (path[path.length - 1].equals("dar")) {
-                        ProgressBar pb = new ProgressBar(progressBar, ((Deporte) cb_principal.getSelectedItem()));
-                        pb.start();
-                        FileOutputStream out = new FileOutputStream(f, false);
-                        ObjectOutputStream output = new ObjectOutputStream(out);
-                        output.writeObject(((Deporte) cb_principal.getSelectedItem()));
-                        out.close();
-                        output.close();
-                    }else{
-                        JOptionPane.showMessageDialog(jfc, "Archivo no valido");
-                    }
-                
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    } */
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem AddDeporte;
@@ -527,6 +574,7 @@ public class MAINE extends javax.swing.JFrame {
     private javax.swing.JMenuItem AddTorneo;
     private javax.swing.JMenuItem ListParticip;
     private javax.swing.JMenuItem MostrarTab;
+    private javax.swing.JComboBox<String> jCB1;
     private javax.swing.JComboBox<String> jCB_team1;
     private javax.swing.JComboBox<String> jCB_team2;
     private javax.swing.JDialog jD_Listar;
@@ -534,17 +582,17 @@ public class MAINE extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabelEtiqueta;
-    private javax.swing.JList<String> jList1;
     private javax.swing.JList<String> jListTeams;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSpinner jSp_team1;
     private javax.swing.JSpinner jSp_team2;
     private javax.swing.JTree jTreeTorneo;
+    private javax.swing.JButton jbtn_cargar;
+    private javax.swing.JButton jbtn_guardar;
     private javax.swing.JButton jbtn_partido;
     private javax.swing.JButton jbtn_partidoSim;
     private javax.swing.JButton jbtn_salir;

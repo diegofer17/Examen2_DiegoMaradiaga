@@ -4,11 +4,13 @@
  */
 package examen2_diegomaradiaga;
 
+import java.io.Serializable;
+
 /**
  *
  * @author df346
  */
-public class Partido {
+public class Partido implements Serializable{
     private String nombre1, nombre2;
     private String puntuaje1, puntuaje2;
 
